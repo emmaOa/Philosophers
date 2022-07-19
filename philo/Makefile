@@ -1,11 +1,11 @@
-MANDATORY= philosophers.c
+MANDATORY= philosophers.c function_libft.c
 BONUS= 
 
 CC=cc
 FLAGS= -Wall -Werror -Wextra -pthread
 DEBUG=-fsanitize=address -g
-NAME=pipex
-PIP=pipex_bonus
+NAME=philo
+PIP=philo_bonus
 
 O_MANDATORY=$(MANDATORY:%.c=%.o)
 O_BONUS=$(BONUS:%.c=%.o)

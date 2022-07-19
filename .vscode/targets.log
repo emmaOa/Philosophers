@@ -6,8 +6,9 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
 
-# Make data base, printed on Mon Jul 18 15:31:02 2022
+# Make data base, printed on Tue Jul 19 08:07:02 2022
 
 # Variables
 
@@ -29,20 +30,14 @@ SHELL = /bin/sh
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
-# makefile (from `Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
-# makefile (from `Makefile', line 8)
-PIP = pipex_bonus
-# makefile (from `Makefile', line 6)
-DEBUG = -fsanitize=address -g
-# makefile (from `Makefile', line 2)
-BONUS = 
+# makefile
+MAKEFILE_LIST := 
 # environment
 VSCODE_CWD = /
 # environment
-Apple_PubSub_Socket_Render = /private/tmp/com.apple.launchd.2jjvg4tV8N/Render
+Apple_PubSub_Socket_Render = /private/tmp/com.apple.launchd.5V8SjNbM2J/Render
 # environment
-PATH = /Users/iouazzan/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+PATH = /Users/iouazzan/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
@@ -50,13 +45,11 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.ycpESuxMr9/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.bjkugHPPWt/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
 HOMEBREW_TEMP = /tmp/iouazzan/Homebrew/Temp
-# makefile (from `Makefile', line 10)
-O_MANDATORY = $(MANDATORY:%.c=%.o)
 # environment
 PWD = /Users/iouazzan/Desktop/Philosophers
 # environment
@@ -68,7 +61,7 @@ HOME = /Users/iouazzan
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/iouazzan/Library/Application Support/Code/CachedData/92d25e35d9bf1a6b16f7d0758f25d48ace11e5b9
+VSCODE_CODE_CACHE_PATH = /Users/iouazzan/Library/Application Support/Code/CachedData/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
 # environment
 LOGNAME = iouazzan
 # environment
@@ -79,8 +72,6 @@ ZSH = /Users/iouazzan/.oh-my-zsh
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
-# makefile (from `Makefile', line 11)
-O_BONUS = $(BONUS:%.c=%.o)
 # environment
 XPC_FLAGS = 0x0
 # default
@@ -91,16 +82,12 @@ MAKECMDGOALS := all
 HOMEBREW_CACHE = /tmp/iouazzan/Homebrew/Caches
 # environment
 SHLVL = 1
-# makefile (from `Makefile', line 4)
-CC = cc
 # default
 MAKE_VERSION := 3.81
 # environment
 USER = iouazzan
 # makefile
-.DEFAULT_GOAL := all
-# makefile (from `Makefile', line 7)
-NAME = pipex
+.DEFAULT_GOAL := 
 # environment
 LESS = -R
 # automatic
@@ -114,7 +101,7 @@ TMPDIR = /var/folders/zz/zyxvpxvq6csfxvn_n0000hd800043_/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/iouazzan/Library/Application Support/Code/1.69.0-main.sock
+VSCODE_IPC_HOOK = /Users/iouazzan/Library/Application Support/Code/1.69.1-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -124,7 +111,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = com.apple.xpc.launchd.oneshot.0x10000002.Electron
+XPC_SERVICE_NAME = com.apple.xpc.launchd.oneshot.0x1000000d.Electron
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -142,15 +129,11 @@ PAGER = less
 # environment
 LC_ALL = C
 # environment
-SECURITYSESSIONID = 186a7
+SECURITYSESSIONID = 187cd
 # automatic
 ^F = $(notdir $^)
 # default
 SUFFIXES := 
-# makefile (from `Makefile', line 5)
-FLAGS = -Wall -Werror -Wextra
-# makefile (from `Makefile', line 1)
-MANDATORY = philosophers.c
 # default
 .INCLUDE_DIRS = /usr/local/include
 # environment
@@ -158,9 +141,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4125
+VSCODE_PID = 14948
 # variable set hash-table stats:
-# Load=74/1024=7%, Rehash=0, Collisions=2/108=2%
+# Load=65/1024=6%, Rehash=0, Collisions=1/86=1%
 
 # Pattern-specific Variable Values
 
@@ -168,9 +151,9 @@ VSCODE_PID = 4125
 
 # Directories
 
-# . (device 16777229, inode 1992067): 6 files, no impossibilities.
+# . (device 16777227, inode 1992067): 5 files, no impossibilities.
 
-# 6 files, no impossibilities in 1 directories.
+# 5 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -178,14 +161,14 @@ VSCODE_PID = 4125
 
 # Files
 
-all: pipex
+# Not a target:
+all:
 #  Command-line target.
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
+#  File has not been updated.
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 .SUFFIXES:
@@ -195,33 +178,23 @@ all: pipex
 
 # Not a target:
 Makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
 #  Implicit rule search has been done.
-#  Last modified 2022-07-18 11:19:18
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Failed to be updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-debug:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 24):
-	gcc -pthread $(FLAGS) $(DEBUG) $(PIP) $(MANDATORY) -o $(NAME)
-	
-
-bonus: pipex_bonus
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-fclean:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 30):
-	rm -rf *.o $(NAME) $(PIP)
-	
+# Not a target:
+makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 .DEFAULT:
@@ -229,68 +202,31 @@ fclean:
 #  Modification time never checked.
 #  File has not been updated.
 
-re: fclean all
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-clean:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 27):
-	rm -rf *.o
-	
-
-pipex_bonus:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 21):
-	gcc -pthread $(FLAGS) $(BONUS) $(DEBUG)  -o $(PIP) -g
-	
-
-pipex:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `'
+# Not a target:
+GNUmakefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := pipex
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := 
-# automatic
-# | := 
-# automatic
-# < := 
-# automatic
-# ^ := 
-# automatic
-# ? := 
+#  Failed to be updated.
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
-#  commands to execute (from `Makefile', line 16):
-	gcc $(FLAGS) $(MANDATORY) -o $(NAME)
-	
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/29=0%
+# Load=6/1024=1%, Rehash=0, Collisions=0/17=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
 
 # No general (`VPATH' variable) search path.
 
-# # of strings in strcache: 1
-# # of strcache buffers: 1
-# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
-# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+# # of strings in strcache: 0
+# # of strcache buffers: 0
+# strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
+# strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Mon Jul 18 15:31:02 2022
+# Finished Make data base on Tue Jul 19 08:07:02 2022
 
  
+make: *** No rule to make target `all'.  Stop.
+
