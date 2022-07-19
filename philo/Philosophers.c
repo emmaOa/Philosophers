@@ -21,12 +21,15 @@ void	ft_error(char *str)
 void *thread(void *ph)
 {
 	struct	timeval tv;
+	int n;
+	int *rt;
 	t_philo	philo;
 
+	n = 1;
 	philo = *(t_philo *)ph;
 	gettimeofday(&tv, NULL);
 	philo.time_of_day = (tv.tv_sec / 1000) + tv.tv_usec;
-	while (1)
+	while (n == 1)
 	{
 		if (philo.forks[philo.id_philo] != 0 
 			|| philo.forks[philo.id_philo + 1] != 0)
@@ -35,16 +38,20 @@ void *thread(void *ph)
 			&& philo.forks[philo.id_philo + 1] == 0)
 		{
 			ft_eat(&philo);
-			printf("%ld %d is sleeping",
+			printf("%ld %d is sleeping\n",
 				((tv.tv_sec / 1000) + (tv.tv_usec * 1000)), philo.id_philo);
 			usleep(philo.time_to_sleep * 1000);
 			philo.time_to_die -= philo.time_to_sleep;
 		}
 		ft_thenck(&philo);
 		if (philo.time_to_live == philo.time_to_die)
-			break;
+			n = 2;
+		n =  1;
 	}
-	
+	printf("%ld %d  died\n",
+		((tv.tv_sec / 1000) + (tv.tv_usec * 1000)), philo.id_philo);
+	rt = &n;
+	return ((void *)rt);
 }
 
 int main(int arc, char *arv[])
