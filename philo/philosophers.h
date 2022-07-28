@@ -21,22 +21,22 @@
 
 typedef struct t_philo
 {
-	int		nb_philo;
-	int		nb_forks;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		nb_philo_eat;
-	int		i;
-	int		time_of_day;
-	int		*forks;
-	int		id_philo;
-	int		time_to_live;
-	pthread_mutex_t mutex;
+	pthread_mutex_t *forks;
+	int				nb_philo;
+	int				nb_forks;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				*time_creat;
+	int				id_philo;
+	int				*last_eat;
+	int				i;
 }	t_philo;
 
 // static	int	check(size_t sign);
 int		ft_atoi(const char *str);
-void	ft_eat(t_philo *philo);
-void	ft_thenck(t_philo *philo);
+int		ft_eat(t_philo *philo);
+int		ft_think(t_philo *philo);
+void		ft_philo(t_philo *philo);
+void	ft_sleep(t_philo *philo);
 #endif

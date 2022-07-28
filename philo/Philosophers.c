@@ -12,91 +12,85 @@
 
 #include "philosophers.h"
 
-void	ft_error(char *str)
-{
-	printf("%s\n", str);
-	exit (1);
-}
-
 void *thread(void *ph)
 {
-	struct	timeval tv;
-	int n;
-	int *rt;
-	t_philo	philo;
+	struct timeval	cur_time;
+	t_philo	*philo;
 
-	n = 1;
-	philo = *(t_philo *)ph;
-	gettimeofday(&tv, NULL);
-	philo.time_of_day = (tv.tv_sec / 1000) + tv.tv_usec;
-	while (n == 1)
+	philo = (t_philo *)ph;
+    gettimeofday(&cur_time, NULL);
+	while (1)
 	{
-		if (philo.forks[philo.id_philo] != 0 
-			|| philo.forks[philo.id_philo + 1] != 0)
-			ft_thenck(&philo);
-		else if (philo.forks[philo.id_philo] == 0 
-			&& philo.forks[philo.id_philo + 1] == 0)
-		{
-			ft_eat(&philo);
-			printf("%ld %d is sleeping\n",
-				((tv.tv_sec / 1000) + (tv.tv_usec * 1000)), philo.id_philo);
-			usleep(philo.time_to_sleep * 1000);
-			philo.time_to_die -= philo.time_to_sleep;
-		}
-		ft_thenck(&philo);
-		if (philo.time_to_live == philo.time_to_die)
-			n = 2;
-		n =  1;
+		ft_eat(philo);
+		printf("test\n");
+		printf("%ld %d is thinking\n",
+			((cur_time.tv_sec / 1000) + (cur_time.tv_usec * 1000)), philo->id_philo);
 	}
-	printf("%ld %d  died\n",
-		((tv.tv_sec / 1000) + (tv.tv_usec * 1000)), philo.id_philo);
-	rt = &n;
-	return ((void *)rt);
+}
+
+void ft_philo(t_philo *philo)
+{
+	struct timeval	cur_time;
+	pthread_t		th[philo->nb_philo];
+	int 			*rt;
+	int i;
+
+	rt = 0;
+	philo->i = 0;
+	i = 0;
+	gettimeofday(&cur_time, NULL);
+	while (philo->i < philo->nb_philo)
+	{
+		pthread_mutex_init(&philo->forks[philo->i], NULL);
+		philo->i++;
+	}
+	philo->i = 0;
+	while (philo->i < philo->nb_philo)
+	{
+
+		philo->id_philo = philo->i;
+		if (pthread_create(&th[i], NULL, &thread, philo) != 0)
+			return ;
+		philo->time_creat[philo->id_philo] = (cur_time.tv_sec / 1000) + (cur_time.tv_usec * 1000);
+		usleep(100);
+		philo->i++;
+	}
+	while (1)
+	{
+		while (i < philo->nb_philo)
+		{
+			if (((((cur_time.tv_sec / 1000) + (cur_time.tv_usec * 1000)) -
+				philo->last_eat[philo->id_philo]) >= philo->time_to_die) ||
+				((cur_time.tv_sec / 1000) + (cur_time.tv_usec * 1000)) -
+				philo->time_creat[philo->id_philo])
+			{
+				printf("%ld %d is die\n",
+     				((cur_time.tv_sec / 1000) + (cur_time.tv_usec * 1000)), philo->id_philo);
+				return ;
+			}
+			i++;
+		}
+		i = 0;
+	}
+	
 }
 
 int main(int arc, char *arv[])
 {
-	// coming SEGV: to be discussed
-	t_philo		philo;
-	pthread_t	th;
-	 
+	(void)arc;
+	t_philo		*philo;
+
+	philo = (t_philo *)malloc(sizeof(t_philo));
 	
-	if (arc != 4 && arc != 5)
-	{
-		printf("nb argument not valide");
-		return 1;
-	}
-	philo.nb_philo = atoi(arv[1]);
-	philo.nb_forks = philo.nb_philo;
-	philo.time_to_die = atoi(arv[2]);
-	philo.time_to_eat = atoi(arv[3]);
-	philo.time_to_sleep = atoi(arv[4]);
-	pthread_mutex_init(&philo.mutex, NULL);
-	philo.i = 0;
-	while (philo.i < philo.nb_forks)
-	{
-		philo.forks[philo.i] = 0;
-		philo.i++;
-	}
-	philo.i = 0;
-	while (philo.i < philo.nb_forks)
-	{
-		philo.id_philo = philo.i;
-		if (pthread_create(&th, NULL, &thread, &philo) != 0)
-			return 2;
-		philo.i++;
-	}
-	philo.i = 0;
-	while (philo.i < philo.nb_forks)
-	{
-		if (pthread_join(th, NULL) != 0)
-			return 3;
-		philo.i++;
-	}
-	if (arc == 5)
-	{
-		// philo.nb_philo_eat= atoi(arv[5]);
-		return 20;
-	}
-	pthread_mutex_destroy(&philo.mutex);
+	philo->nb_philo = atoi(arv[1]);
+	philo->nb_forks = philo->nb_philo;
+	philo->time_to_die = atoi(arv[2]);
+	philo->time_to_eat = atoi(arv[3]);
+	philo->time_to_sleep = atoi(arv[4]);
+	philo->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * philo->nb_philo);
+	philo->last_eat = (int *)malloc(sizeof(int) * philo->nb_philo);
+	philo->time_creat = (int *)malloc(sizeof(int) * philo->nb_philo);
+	ft_philo(philo);
+	printf("---teest main----\n");
+	return (0);
 }

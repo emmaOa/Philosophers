@@ -21,7 +21,7 @@ $(PIP):
 	gcc $(FLAGS) $(BONUS) $(DEBUG)  -o $(PIP) -g
 
 debug:
-	gcc $(FLAGS) $(DEBUG) $(PIP) $(MANDATORY) -o $(NAME)
+	gcc $(FLAGS) $(DEBUG) $(MANDATORY) -o $(NAME)
 
 clean:
 	rm -rf *.o
