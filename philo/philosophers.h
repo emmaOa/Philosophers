@@ -30,13 +30,16 @@ typedef struct t_philo
 	int				*time_creat;
 	int				id_philo;
 	int				*last_eat;
+	long int		first_time;
 	int				i;
+	pthread_mutex_t	mu_msg;
 }	t_philo;
 
 // static	int	check(size_t sign);
 int		ft_atoi(const char *str);
-int		ft_eat(t_philo *philo);
+void	ft_eat(t_philo *philo);
 int		ft_think(t_philo *philo);
-void		ft_philo(t_philo *philo);
+void	ft_philo(t_philo *philo);
 void	ft_sleep(t_philo *philo);
+int     print_msg(char *str, t_philo *philo, int id_philo);
 #endif
