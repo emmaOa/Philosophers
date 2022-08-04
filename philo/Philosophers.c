@@ -21,11 +21,12 @@ void *thread(void *ph)
 	{
 		// time to thinking :(
 		ft_eat(philo);
+		printf("*****is thimking*****\n");
 		print_msg("is thinking", philo);
 	}
 }
 
-void ft_philo(t_global *data)
+int	ft_philo(t_global *data)
 {
 	struct timeval	cur_time;
 	int i;
@@ -45,9 +46,9 @@ void ft_philo(t_global *data)
 		data->philos[i].id = i;
 		data->philos[i].data = data;
 		if (pthread_create(&data->philos[i].th, NULL, &thread, &data->philos[i]) != 0)
-			return ;
+			return 0;
 		gettimeofday(&cur_time, NULL);
-		data->philos[i].last_eat = (cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000);
+		data->philos->last_eat = (cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000);
 		usleep(100);
 		i++;
 	}
@@ -56,28 +57,21 @@ void ft_philo(t_global *data)
 		while (i < data->nb_philo)
 		{
 			gettimeofday(&cur_time, NULL);
-			if (((((cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000)) -
-				data->philos[i].last_eat) >= data->time_to_die) ||
-				((cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000)) -
-				data->philos[i].last_eat >= data->time_to_die)
+			if ((((cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000)) -
+				data->philos->last_eat) >= data->time_to_die)
 			{
 				print_msg("died", data->philos);
-				i = 0;
-				while (i < data->nb_philo)
-				{
-					pthread_mutex_destroy(&data->forks[i]);
-					i++;
-				}
-				pthread_mutex_destroy(&data->mu_msg);
-				printf("---teest philo----\n");
-				return ;
+				// printf("++++++++++++%ld\n", (cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000) - data->philos->last_eat);
+				// // printf("++++////++++%ld\n", data->philos->last_eat);
+				// printf("++++\\\\+++%ld\n", data->time_to_die);
+				// printf("id philo %d\n", data->philos->id);
+
+				return 1;
 			}
 			i++;
 		}
 		i = 0;
 	}
-
-
 }
 
 int main(int arc, char *arv[])
@@ -93,7 +87,14 @@ int main(int arc, char *arv[])
 	data.time_to_sleep = atoi(arv[4]);
 	data.forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data.nb_philo);
 	data.philos = (t_philo *)malloc(sizeof(t_philo) * data.nb_philo);
-	ft_philo(&data);
-	printf("---teest philo--main--\n");
+	while(1)
+	{
+		if (ft_philo(&data) == 1)
+		{
+			printf("---teest philo--main--\n");
+			return 3;
+		}
+		
+	}
 	return (0);
 }
