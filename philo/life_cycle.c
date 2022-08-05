@@ -3,26 +3,39 @@
 int     print_msg(char *str, t_philo *philo)
 {
     struct timeval	cur_time;
-    char *di;
 
-    di = "is die";
-    if (ft_strcmp(di, str) == 0)
+    if (philo->data->arg_5 != -1)
     {
-        pthread_mutex_lock(&philo->data->mu_msg);
-        gettimeofday(&cur_time, NULL);
-        printf("%ld %d %s\n",
- 	    	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
-        pthread_mutex_lock(&philo->data->mu_msg);
-        return 0;
+        if (ft_strcmp("is eating", str) != 0 && philo->data->min_eat == 0)
+            {
+                pthread_mutex_lock(&philo->data->mu_msg);
+                gettimeofday(&cur_time, NULL);
+                printf("%ld %d %s\n",
+ 	            	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+            }
+        else
+                pthread_mutex_lock(&philo->data->mu_msg);
+                gettimeofday(&cur_time, NULL);
+                printf("%ld %d %s\n",
+ 	            	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+                pthread_mutex_unlock(&philo->data->mu_msg);
     }
     else
-    {
-        pthread_mutex_lock(&philo->data->mu_msg);
-        gettimeofday(&cur_time, NULL);
-        printf("%ld %d %s\n",
- 	    	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
-        pthread_mutex_unlock(&philo->data->mu_msg);
-    }
+        if (ft_strcmp("died", str) == 0)
+        {
+            pthread_mutex_lock(&philo->data->mu_msg);
+            gettimeofday(&cur_time, NULL);
+            printf("%ld %d %s\n",
+ 	        	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+        }
+        else
+        {
+            pthread_mutex_lock(&philo->data->mu_msg);
+            gettimeofday(&cur_time, NULL);
+            printf("%ld %d %s\n",
+ 	        	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+            pthread_mutex_unlock(&philo->data->mu_msg);
+        }
     return 0;
 }
 
@@ -38,44 +51,37 @@ long    gettime()
 
 void    ft_usleep(t_philo *philo, char *str)
 {
-    // struct timeval	cur_time;
     long            time;
 
     if (ft_strcmp(str, "is eating") == 0) 
         time = philo->data->time_to_eat;
     else
         time = philo->data->time_to_sleep;
-    // gettimeofday(&cur_time, NULL);
-    usleep(time * 800);
+    usleep(time * 900);
     while (gettime() < (philo->data->time_usleep + time))
-    {
-        // usleep(5);
-        usleep(100);
-        gettime();
-    }
+        usleep(10);
 }
 
 void ft_eat(t_philo *philo)
 {
     struct timeval	cur_time;
 
-    pthread_mutex_lock(&philo->data->forks[philo->id]);
+    pthread_mutex_lock(&philo->data->forks[philo->id] - 1);
     print_msg("has taken a fork", philo);
-    pthread_mutex_lock(&philo->data->forks[(philo->id + 1) % philo->data->nb_philo]);
+    pthread_mutex_lock(&philo->data->forks[(philo->id % philo->data->nb_philo)]);
     print_msg("has taken a fork", philo);
     print_msg("is eating", philo);
     gettimeofday(&cur_time, NULL);
     philo->last_eat = ((cur_time.tv_sec * 1000) + cur_time.tv_usec / 1000);
-    // printf("///////last eat %ld %d\n", philo->last_eat, philo->id);
     philo->data->time_usleep = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
-    // usleep(philo->data->time_to_eat * 1000);
+    philo->nb_eat++;
+    if (philo->nb_eat == philo->data->arg_5)
+        philo->data->min_eat--;
     ft_usleep(philo, "is eating");
-    pthread_mutex_unlock(&philo->data->forks[philo->id]);
-    pthread_mutex_unlock(&philo->data->forks[(philo->id + 1) % philo->data->nb_philo]);
     print_msg("is sleeping", philo);
+    pthread_mutex_unlock(&philo->data->forks[philo->id] - 1);
+    pthread_mutex_unlock(&philo->data->forks[(philo->id % philo->data->nb_philo)]);
     gettimeofday(&cur_time, NULL);
     philo->data->time_usleep = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
     ft_usleep(philo, "is sleeping");
-    // printf("finaaaaaaaal\n");
-    // usleep(philo->data->time_to_sleep * 1000);
 }

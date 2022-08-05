@@ -24,6 +24,7 @@ typedef struct s_philo
 	pthread_t			th;
 	long				last_eat;
 	int					id;
+	int					nb_eat;
 	struct  s_global	*data;
 	
 }				t_philo;
@@ -37,6 +38,8 @@ typedef struct s_global
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			time_usleep;
+	int				min_eat;
+	int				arg_5;
 	pthread_mutex_t	mu_msg;
 	long 			first_time;
 	pthread_mutex_t *forks;
