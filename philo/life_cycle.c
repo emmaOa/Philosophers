@@ -4,38 +4,41 @@ int     print_msg(char *str, t_philo *philo)
 {
     struct timeval	cur_time;
 
-    if (philo->data->arg_5 != -1)
+    if (ft_strcmp("died", str) == 0)
     {
-        if (ft_strcmp("is eating", str) != 0 && philo->data->min_eat == 0)
-            {
-                pthread_mutex_lock(&philo->data->mu_msg);
-                gettimeofday(&cur_time, NULL);
-                printf("%ld %d %s\n",
- 	            	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
-            }
-        else
-                pthread_mutex_lock(&philo->data->mu_msg);
-                gettimeofday(&cur_time, NULL);
-                printf("%ld %d %s\n",
- 	            	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
-                pthread_mutex_unlock(&philo->data->mu_msg);
+        pthread_mutex_lock(&philo->data->mu_msg);
+        gettimeofday(&cur_time, NULL);
+        printf("%ld %d %s\n",
+ 	    	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
     }
     else
-        if (ft_strcmp("died", str) == 0)
+    {
+        pthread_mutex_lock(&philo->data->mu_msg);
+        gettimeofday(&cur_time, NULL);
+        printf("%ld %d %s\n",
+ 	    	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+        pthread_mutex_unlock(&philo->data->mu_msg);
+    }
+    return 0;
+}
+
+int     check_arg(char *arv[], int arc)
+{
+    int i;
+    int j;
+
+    i = 1;
+    while (i < arc)
+    {
+        j = 0;
+        while (arv[i][j])
         {
-            pthread_mutex_lock(&philo->data->mu_msg);
-            gettimeofday(&cur_time, NULL);
-            printf("%ld %d %s\n",
- 	        	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
+            if (arv[i][j] > '9' || arv[i][j] < '0')
+                return 1;
+            j++;
         }
-        else
-        {
-            pthread_mutex_lock(&philo->data->mu_msg);
-            gettimeofday(&cur_time, NULL);
-            printf("%ld %d %s\n",
- 	        	((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) - philo->data->first_time), philo->id, str);
-            pthread_mutex_unlock(&philo->data->mu_msg);
-        }
+        i++;
+    }
     return 0;
 }
 

@@ -54,4 +54,5 @@ int     print_msg(char *str, t_philo *philo);
 int		ft_strcmp(char *str1, char *str2);
 void	ft_usleep(t_philo *philo, char *str);
 long    gettime();
+int     check_arg(char *arv[], int arc);
 #endif

@@ -55,9 +55,9 @@ int	ft_philo(t_global *data)
 	{
 		while (i < data->nb_philo)
 		{
-			gettimeofday(&cur_time, NULL);
 			if (data->arg_5 > 0)
 			{
+				gettimeofday(&cur_time, NULL);
 				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
 				data->philos->last_eat) > data->time_to_die) || data->min_eat == 0)
 				{
@@ -66,12 +66,15 @@ int	ft_philo(t_global *data)
 				}
 			}
 			else
+			{
+				gettimeofday(&cur_time, NULL);
 				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
 					data->philos->last_eat) > data->time_to_die))
 				{
 					print_msg("died", data->philos);
 					return 1;
 				}
+			}
 			i++;
 		}
 		i = 0;
@@ -80,54 +83,49 @@ int	ft_philo(t_global *data)
 
 int main(int arc, char *arv[])
 {
-	(void)arc;
-	// red flag: SEGV
-	t_global		data;
-	
-	if (arc == 6)
-	{
+	t_global		*data;
 
-		data.arg_5 = atoi(arv[arc-1]);
-		data.nb_philo = atoi(arv[1]);
-		data.nb_forks = data.nb_philo;
-		data.min_eat = data.nb_philo;
-		data.time_to_die = atoi(arv[2]);
-		data.time_to_eat = atoi(arv[3]);
-		data.time_to_sleep = atoi(arv[4]);
-		data.forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data.nb_philo);
-		data.philos = (t_philo *)malloc(sizeof(t_philo) * data.nb_philo);
-		ft_philo(&data);
-		printf("---teest philo--main--\n");
-		int i = 0;
-    	while (i < data.nb_philo)
-    	{
-    	        if(pthread_detach(data.philos[i].th) != 0)
-    	            return 1;
-			i++;
-    	}
-	}
-	else if (arc == 5)
+
+	data = malloc(sizeof(t_global ));
+	if (check_arg(arv, arc) == 1)
 	{
-		data.arg_5 = -1;
-		data.min_eat = -1;
-		data.nb_philo = atoi(arv[1]);
-		data.nb_forks = data.nb_philo;
-		data.time_to_die = atoi(arv[2]);
-		data.time_to_eat = atoi(arv[3]);
-		data.time_to_sleep = atoi(arv[4]);
-		data.forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data.nb_philo);
-		data.philos = (t_philo *)malloc(sizeof(t_philo) * data.nb_philo);
-		ft_philo(&data);
-		printf("---teest philo--main--\n");
-		int i = 0;
-    	while (i < data.nb_philo)
-    	{
-    	        if(pthread_detach(data.philos[i].th) != 0)
-    	            return 1;
-			i++;
-    	}
+		printf("arguments not valide\n");
+		return 0;
 	}
 	else
-		printf("NB argumentsnot valide\n");
+	{
+		if (arc == 6)
+		{
+		
+			data->arg_5 = atoi(arv[arc - 1]);
+			data->nb_philo = atoi(arv[1]);
+			data->nb_forks = data->nb_philo;
+			data->min_eat = data->nb_philo;
+			data->time_to_die = atoi(arv[2]);
+			data->time_to_eat = atoi(arv[3]);
+			data->time_to_sleep = atoi(arv[4]);
+			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
+			ft_philo(data);
+			printf("---teest philo--main--\n");
+			return 0;
+		}
+		else if (arc == 5)
+		{
+			data->arg_5 = -1;
+			data->min_eat = -1;
+			data->nb_philo = atoi(arv[1]);
+			data->nb_forks = data->nb_philo;
+			data->time_to_die = atoi(arv[2]);
+			data->time_to_eat = atoi(arv[3]);
+			data->time_to_sleep = atoi(arv[4]);
+			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
+			ft_philo(data);
+			printf("---teest philo--main--\n");
+		}
+		else
+			printf("NB arguments not valide\n");
+	}
 	return (0);
 }
