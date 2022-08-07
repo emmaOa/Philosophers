@@ -52,7 +52,7 @@ long    gettime()
     return time;
 }
 
-void    ft_usleep(t_philo *philo, char *str)
+void    ft_usleep(t_philo *philo, char *str, long now)
 {
     long            time;
 
@@ -60,9 +60,9 @@ void    ft_usleep(t_philo *philo, char *str)
         time = philo->data->time_to_eat;
     else
         time = philo->data->time_to_sleep;
-    usleep(time * 900);
-    while (gettime() < (philo->data->time_usleep + time))
-        usleep(10);
+    usleep(time * 600);
+    while (gettime() < (now + time))
+        usleep(100);
 }
 
 void ft_eat(t_philo *philo)
@@ -74,17 +74,18 @@ void ft_eat(t_philo *philo)
     pthread_mutex_lock(&philo->data->forks[(philo->id % philo->data->nb_philo)]);
     print_msg("has taken a fork", philo);
     print_msg("is eating", philo);
-    gettimeofday(&cur_time, NULL);
-    philo->last_eat = ((cur_time.tv_sec * 1000) + cur_time.tv_usec / 1000);
-    philo->data->time_usleep = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
     philo->nb_eat++;
     if (philo->nb_eat == philo->data->arg_5)
         philo->data->min_eat--;
-    ft_usleep(philo, "is eating");
+    pthread_mutex_lock(&philo->data->mu_lest_est);
+    gettimeofday(&cur_time, NULL);
+    philo->last_eat = ((cur_time.tv_sec * 1000) + cur_time.tv_usec / 1000);
+    pthread_mutex_unlock(&philo->data->mu_lest_est);
+    gettimeofday(&cur_time, NULL);
+    ft_usleep(philo, "is eating", ((cur_time.tv_sec * 1000) + cur_time.tv_usec / 1000));
     print_msg("is sleeping", philo);
     pthread_mutex_unlock(&philo->data->forks[philo->id] - 1);
     pthread_mutex_unlock(&philo->data->forks[(philo->id % philo->data->nb_philo)]);
     gettimeofday(&cur_time, NULL);
-    philo->data->time_usleep = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
-    ft_usleep(philo, "is sleeping");
+    ft_usleep(philo, "is sleeping", ((cur_time.tv_sec * 1000) + cur_time.tv_usec / 1000));
 }

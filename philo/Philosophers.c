@@ -26,7 +26,8 @@ void *thread(void *ph)
 
 int	ft_philo(t_global *data)
 {
-	struct timeval	cur_time;
+	struct	timeval	cur_time;
+	long	last_eat;
 	int i;
 
 	i = 0;
@@ -36,6 +37,8 @@ int	ft_philo(t_global *data)
 		i++;
 	}
 	pthread_mutex_init(&data->mu_msg, NULL);
+	pthread_mutex_init(&data->mu_lest_est, NULL);
+	pthread_mutex_init(&data->mu_min_eat, NULL);
 	i = 0;
 	gettimeofday(&cur_time, NULL);
 	data->first_time = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
@@ -47,7 +50,9 @@ int	ft_philo(t_global *data)
 		if (pthread_create(&data->philos[i].th, NULL, &thread, &data->philos[i]) != 0)
 			return 0;
 		gettimeofday(&cur_time, NULL);
+		pthread_mutex_lock(&data->mu_lest_est);
 		data->philos->last_eat = (cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000);
+		pthread_mutex_unlock(&data->mu_lest_est);
 		usleep(100);
 		i++;
 	}
@@ -55,11 +60,14 @@ int	ft_philo(t_global *data)
 	{
 		while (i < data->nb_philo)
 		{
+			pthread_mutex_lock(&data->mu_lest_est);
+			last_eat = data->philos->last_eat;
+			pthread_mutex_unlock(&data->mu_lest_est);
 			if (data->arg_5 > 0)
 			{
 				gettimeofday(&cur_time, NULL);
 				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
-				data->philos->last_eat) > data->time_to_die) || data->min_eat == 0)
+				last_eat) > data->time_to_die) || data->min_eat == 0)
 				{
 					printf(" /////min eat : %d\n", data->min_eat);
 					return 1;
@@ -69,7 +77,7 @@ int	ft_philo(t_global *data)
 			{
 				gettimeofday(&cur_time, NULL);
 				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
-					data->philos->last_eat) > data->time_to_die))
+					last_eat) > data->time_to_die))
 				{
 					print_msg("died", data->philos);
 					return 1;
@@ -86,14 +94,11 @@ int main(int arc, char *arv[])
 	t_global		*data;
 
 
-	data = malloc(sizeof(t_global ));
-	if (check_arg(arv, arc) == 1)
+	data = malloc(sizeof(t_global));
+	if (check_arg(arv, arc) == 0)
 	{
-		printf("arguments not valide\n");
-		return 0;
-	}
-	else
-	{
+		if (atoi(arv[1]) == 0)
+			return 0;
 		if (arc == 6)
 		{
 		
@@ -127,5 +132,7 @@ int main(int arc, char *arv[])
 		else
 			printf("NB arguments not valide\n");
 	}
+	else
+		printf("arguments not valide\n");
 	return (0);
 }

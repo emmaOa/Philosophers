@@ -3,7 +3,7 @@ BONUS=
 
 CC=cc
 FLAGS= -Wall -Werror -Wextra -pthread
-DEBUG=-fsanitize=address -g
+DEBUG=-fsanitize=thread -g
 NAME=philo
 PIP=philo_bonus
 

@@ -22,9 +22,9 @@
 typedef struct s_philo
 {
 	pthread_t			th;
-	long				last_eat;
 	int					id;
 	int					nb_eat;
+	long				last_eat;
 	struct  s_global	*data;
 	
 }				t_philo;
@@ -37,10 +37,11 @@ typedef struct s_global
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	long			time_usleep;
 	int				min_eat;
 	int				arg_5;
 	pthread_mutex_t	mu_msg;
+	pthread_mutex_t	mu_min_eat;
+	pthread_mutex_t	mu_lest_est;
 	long 			first_time;
 	pthread_mutex_t *forks;
 }	t_global;
@@ -52,7 +53,7 @@ int		ft_philo(t_global *data);
 void	ft_sleep(t_philo *philo);
 int     print_msg(char *str, t_philo *philo);
 int		ft_strcmp(char *str1, char *str2);
-void	ft_usleep(t_philo *philo, char *str);
+void	ft_usleep(t_philo *philo, char *str, long now);
 long    gettime();
 int     check_arg(char *arv[], int arc);
 #endif
