@@ -26,7 +26,6 @@ void *thread(void *ph)
 
 int	ft_philo(t_global *data)
 {
-	struct	timeval	cur_time;
 	long	last_eat;
 	int i;
 
@@ -40,8 +39,7 @@ int	ft_philo(t_global *data)
 	pthread_mutex_init(&data->mu_lest_est, NULL);
 	pthread_mutex_init(&data->mu_min_eat, NULL);
 	i = 0;
-	gettimeofday(&cur_time, NULL);
-	data->first_time = (cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000);
+	data->first_time = gettime();
 	while (i < data->nb_philo)
 	{
 		data->philos[i].id = i + 1;
@@ -49,9 +47,8 @@ int	ft_philo(t_global *data)
 		data->philos[i].data = data;
 		if (pthread_create(&data->philos[i].th, NULL, &thread, &data->philos[i]) != 0)
 			return 0;
-		gettimeofday(&cur_time, NULL);
 		pthread_mutex_lock(&data->mu_lest_est);
-		data->philos->last_eat = (cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000);
+		data->philos->last_eat = gettime();
 		pthread_mutex_unlock(&data->mu_lest_est);
 		usleep(100);
 		i++;
@@ -61,23 +58,19 @@ int	ft_philo(t_global *data)
 		while (i < data->nb_philo)
 		{
 			pthread_mutex_lock(&data->mu_lest_est);
+
 			last_eat = data->philos->last_eat;
 			pthread_mutex_unlock(&data->mu_lest_est);
 			if (data->arg_5 > 0)
 			{
-				gettimeofday(&cur_time, NULL);
-				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
-				last_eat) > data->time_to_die) || data->min_eat == 0)
-				{
-					// printf(" /////min eat : %d\n", data->min_eat);
+				pthread_mutex_lock(&data->mu_min_eat);
+				if (((gettime() - last_eat) > data->time_to_die) || data->min_eat == 0)
 					return 1;
-				}
+				pthread_mutex_unlock(&data->mu_min_eat);
 			}
 			else
 			{
-				gettimeofday(&cur_time, NULL);
-				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
-					last_eat) > data->time_to_die))
+				if (((gettime() - last_eat) > data->time_to_die))
 				{
 					print_msg("died", data->philos);
 					return 1;
