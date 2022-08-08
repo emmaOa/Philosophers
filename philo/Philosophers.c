@@ -69,7 +69,7 @@ int	ft_philo(t_global *data)
 				if ((((cur_time.tv_sec * 1000 + cur_time.tv_usec / 1000) -
 				last_eat) > data->time_to_die) || data->min_eat == 0)
 				{
-					printf(" /////min eat : %d\n", data->min_eat);
+					// printf(" /////min eat : %d\n", data->min_eat);
 					return 1;
 				}
 			}
@@ -112,7 +112,7 @@ int main(int arc, char *arv[])
 			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
 			ft_philo(data);
-			printf("---teest philo--main--\n");
+			// printf("---teest philo--main--\n");
 			return 0;
 		}
 		else if (arc == 5)
@@ -127,7 +127,7 @@ int main(int arc, char *arv[])
 			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
 			ft_philo(data);
-			printf("---teest philo--main--\n");
+			// printf("---teest philo--main--\n");
 		}
 		else
 			printf("NB arguments not valide\n");
