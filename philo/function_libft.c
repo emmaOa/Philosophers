@@ -21,12 +21,12 @@ static	int	check(size_t sign)
 
 int	ft_strcmp(char *str1, char *str2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str1[i] && str1[i] == str2[i])
 		i++;
-	return str1[i] - str2[i];
+	return (str1[i] - str2[i]);
 }
 
 int	ft_atoi(const char *str)

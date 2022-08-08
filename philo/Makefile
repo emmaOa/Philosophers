@@ -1,4 +1,4 @@
-MANDATORY= philosophers.c function_libft.c life_cycle.c
+MANDATORY= philosophers.c function_libft.c life_cycle.c arg.c
 BONUS= 
 
 CC=cc

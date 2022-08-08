@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-void *thread(void *ph)
+void	*thread(void *ph)
 {
 	t_philo	*philo;
 
@@ -24,19 +24,15 @@ void *thread(void *ph)
 	}
 }
 
-int	ft_philo(t_global *data)
+void	ft_philo(t_global *data)
 {
-	long	last_eat;
-	int i;
+	int	i;
 
-	i = 0;
-	while (i < data->nb_philo)
-	{
+	i = -1;
+	while (++i < data->nb_philo)
 		pthread_mutex_init(&data->forks[i], NULL);
-		i++;
-	}
 	pthread_mutex_init(&data->mu_msg, NULL);
-	pthread_mutex_init(&data->mu_lest_est, NULL);
+	pthread_mutex_init(&data->mu_last_est, NULL);
 	pthread_mutex_init(&data->mu_min_eat, NULL);
 	i = 0;
 	data->first_time = gettime();
@@ -45,83 +41,72 @@ int	ft_philo(t_global *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].nb_eat = 0;
 		data->philos[i].data = data;
-		if (pthread_create(&data->philos[i].th, NULL, &thread, &data->philos[i]) != 0)
-			return 0;
-		pthread_mutex_lock(&data->mu_lest_est);
+		if (pthread_create
+			(&data->philos[i].th, NULL, &thread, &data->philos[i]) != 0)
+			return ;
+		pthread_mutex_lock(&data->mu_last_est);
 		data->philos->last_eat = gettime();
-		pthread_mutex_unlock(&data->mu_lest_est);
+		pthread_mutex_unlock(&data->mu_last_est);
 		usleep(100);
 		i++;
 	}
+	whait_thraeds(data);
+}
+
+int	stop_threads(t_global *data)
+{
+	int		i;
+
+	i = -1;
+	while (++i < data->nb_philo)
+	{
+		pthread_mutex_lock(&data->mu_last_est);
+		if (data->arg_5 > 0)
+		{
+			pthread_mutex_lock(&data->mu_min_eat);
+			if (((gettime() - data->philos->last_eat) > data->time_to_die)
+				|| data->min_eat == 0)
+				return (1);
+			pthread_mutex_unlock(&data->mu_min_eat);
+		}
+		else
+		{
+			if (((gettime() - data->philos->last_eat) > data->time_to_die))
+			{
+				print_msg("died", data->philos);
+				return (1);
+			}
+		}
+		pthread_mutex_unlock(&data->mu_last_est);
+	}
+	return (0);
+}
+
+void	whait_thraeds(t_global *data)
+{
 	while (1)
 	{
-		while (i < data->nb_philo)
-		{
-			pthread_mutex_lock(&data->mu_lest_est);
-
-			last_eat = data->philos->last_eat;
-			pthread_mutex_unlock(&data->mu_lest_est);
-			if (data->arg_5 > 0)
-			{
-				pthread_mutex_lock(&data->mu_min_eat);
-				if (((gettime() - last_eat) > data->time_to_die) || data->min_eat == 0)
-					return 1;
-				pthread_mutex_unlock(&data->mu_min_eat);
-			}
-			else
-			{
-				if (((gettime() - last_eat) > data->time_to_die))
-				{
-					print_msg("died", data->philos);
-					return 1;
-				}
-			}
-			i++;
-		}
-		i = 0;
+		if (stop_threads(data) == 1)
+			return ;
 	}
 }
 
-int main(int arc, char *arv[])
+int	main(int arc, char *arv[])
 {
 	t_global		*data;
-
 
 	data = malloc(sizeof(t_global));
 	if (check_arg(arv, arc) == 0)
 	{
 		if (atoi(arv[1]) == 0)
-			return 0;
+			return (0);
 		if (arc == 6)
 		{
-		
-			data->arg_5 = atoi(arv[arc - 1]);
-			data->nb_philo = atoi(arv[1]);
-			data->nb_forks = data->nb_philo;
-			data->min_eat = data->nb_philo;
-			data->time_to_die = atoi(arv[2]);
-			data->time_to_eat = atoi(arv[3]);
-			data->time_to_sleep = atoi(arv[4]);
-			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
-			ft_philo(data);
-			// printf("---teest philo--main--\n");
-			return 0;
+			arg_6(arc, arv, data);
+			return (0);
 		}
 		else if (arc == 5)
-		{
-			data->arg_5 = -1;
-			data->min_eat = -1;
-			data->nb_philo = atoi(arv[1]);
-			data->nb_forks = data->nb_philo;
-			data->time_to_die = atoi(arv[2]);
-			data->time_to_eat = atoi(arv[3]);
-			data->time_to_sleep = atoi(arv[4]);
-			data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-			data->philos = (t_philo *)malloc(sizeof(t_philo) * data->nb_philo);
-			ft_philo(data);
-			// printf("---teest philo--main--\n");
-		}
+			arg_5(arv, data);
 		else
 			printf("NB arguments not valide\n");
 	}
