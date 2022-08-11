@@ -49,6 +49,8 @@ int	check_arg(char *arv[], int arc)
 				return (1);
 			j++;
 		}
+		if (ft_atoi(arv[i]) < 0)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -72,9 +74,9 @@ void	ft_usleep(t_philo *philo, char *str, long now)
 		time = philo->data->time_to_eat;
 	else
 		time = philo->data->time_to_sleep;
-	usleep(time * 600);
+	usleep(time * 800);
 	while (gettime() < (now + time))
-		usleep(100);
+		usleep(10);
 }
 
 void	ft_eat(t_philo *philo)
