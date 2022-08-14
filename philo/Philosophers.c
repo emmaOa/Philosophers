@@ -96,9 +96,11 @@ int	main(int arc, char *arv[])
 	t_global		*data;
 
 	data = malloc(sizeof(t_global));
+	if (!data)
+		return (1);
 	if (check_arg(arv, arc) == 0)
 	{
-		if (atoi(arv[1]) == 0)
+		if (ft_atoi(arv[1]) == 0)
 			return (0);
 		if (arc == 6)
 		{
