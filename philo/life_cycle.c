@@ -88,7 +88,7 @@ void	ft_eat(t_philo *philo)
 	print_msg("has taken a fork", philo);
 	print_msg("is eating", philo);
 	philo->nb_eat++;
-	if (philo->nb_eat == philo->data->arg_5)
+	if (philo->nb_eat >= philo->data->arg_5)
 	{
 		pthread_mutex_lock(&philo->data->mu_min_eat);
 		philo->data->min_eat--;

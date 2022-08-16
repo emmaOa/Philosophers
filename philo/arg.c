@@ -29,7 +29,7 @@ void	arg_6(int arc, char *arv[], t_global *data)
 
 void	arg_5(char *arv[], t_global *data)
 {
-	data->arg_5 = -1;
+	data->arg_5 = -2;
 	data->min_eat = -1;
 	data->nb_philo = ft_atoi(arv[1]);
 	data->nb_forks = data->nb_philo;

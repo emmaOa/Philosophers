@@ -61,22 +61,15 @@ int	stop_threads(t_global *data)
 	while (++i < data->nb_philo)
 	{
 		pthread_mutex_lock(&data->mu_last_est);
-		if (data->arg_5 > 0)
+		pthread_mutex_lock(&data->mu_min_eat);
+		if (((gettime() - data->philos->last_eat) > data->time_to_die)
+			|| (data->min_eat <= 0 && data->arg_5 != -2))
 		{
-			pthread_mutex_lock(&data->mu_min_eat);
-			if (((gettime() - data->philos->last_eat) > data->time_to_die)
-				|| data->min_eat == 0)
-				return (1);
-			pthread_mutex_unlock(&data->mu_min_eat);
-		}
-		else
-		{
-			if (((gettime() - data->philos->last_eat) > data->time_to_die))
-			{
+			if (data->arg_5 == -2)
 				print_msg("died", data->philos);
-				return (1);
-			}
+			return (1);
 		}
+		pthread_mutex_unlock(&data->mu_min_eat);
 		pthread_mutex_unlock(&data->mu_last_est);
 	}
 	return (0);
@@ -98,21 +91,24 @@ int	main(int arc, char *arv[])
 	data = malloc(sizeof(t_global));
 	if (!data)
 		return (1);
-	if (check_arg(arv, arc) == 0)
+	if (arc > 1)
 	{
-		if (ft_atoi(arv[1]) == 0)
-			return (0);
-		if (arc == 6)
+		if (check_arg(arv, arc) == 0)
 		{
-			arg_6(arc, arv, data);
-			return (0);
+			if (ft_atoi(arv[1]) == 0)
+				return (0);
+			if (arc == 6)
+			{
+				arg_6(arc, arv, data);
+				return (0);
+			}
+			else if (arc == 5)
+				arg_5(arv, data);
+			else
+				printf("NB arguments not valide\n");
 		}
-		else if (arc == 5)
-			arg_5(arv, data);
 		else
-			printf("NB arguments not valide\n");
+			printf("arguments not valide\n");
 	}
-	else
-		printf("arguments not valide\n");
 	return (0);
 }
